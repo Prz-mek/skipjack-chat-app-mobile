@@ -3,7 +3,7 @@ import { FlatList, View, StyleSheet } from "react-native";
 import ContactListItem from "../components/ContactListItem";
 import ContactListData from "../mock/ContactListData";
 
-export default function ConversationListScreen() {
+export default function ContactListScreen() {
 
   return (
     <View style={styles.container}>

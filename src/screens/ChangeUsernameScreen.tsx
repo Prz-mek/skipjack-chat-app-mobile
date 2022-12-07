@@ -9,7 +9,6 @@ import CustomButton from "../components/CustomButton";
 
 const mainColor = '#f4511e';
 
-
 export default function ChangeUsernameScreen({ navigation }: any) {
 
     return (

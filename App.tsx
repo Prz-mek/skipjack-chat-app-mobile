@@ -19,6 +19,8 @@ import RegisterScreen from './src/screens/RegisterScreen';
 import ProfileButton from './src/components/ProfileButton';
 import NewContactButton from './src/components/NewContactButton';
 import NewConversationButton from './src/components/NewConversationButton';
+import AddContactScreen from './src/screens/AddContactScreen';
+import CreateConversationScreen from './src/screens/CreateConversationScreen';
 
 
 const mainColor = '#f4511e';
@@ -79,6 +81,8 @@ export default function App() {
                   <Stack.Screen name="ConversationRoom" component={ConversationScreen} options={{
                     headerTitle: () => <ConversationTitle {...{ title: 'Ola' }} />,
                   }} />
+                  <Stack.Screen name="AddContact" component={AddContactScreen} options={{ title: "Add new contact" }} />
+                  <Stack.Screen name="CreateConversation" component={CreateConversationScreen} options={{ title: "Create group conversation" }} />
                 </Stack.Group>
               ) : (
                 <Stack.Group>
@@ -103,7 +107,6 @@ function Dashboard() {
     // <ConversationsProvider>
     <Tab.Navigator 
       initialRouteName="Conversations"
-      // activeColor="red"
       screenOptions={{
       headerStyle: {
         backgroundColor: mainColor,
@@ -112,7 +115,14 @@ function Dashboard() {
       headerTitleStyle: {
         fontWeight: 'bold',
       },
-    }}>
+      tabBarShowLabel: false,
+      tabBarActiveTintColor: "white",
+      tabBarInactiveTintColor: '#f4a15e',
+      tabBarStyle: {
+        backgroundColor: mainColor
+      }
+     }}
+    >
       <Tab.Screen
         name="Conversations"
         component={ConversationListScreen}
@@ -122,7 +132,7 @@ function Dashboard() {
             <ProfileButton onPress={() => navigation.navigate('Profile')} />
           ),
           headerRight: () => (
-            <NewConversationButton onPress={() => navigation.navigate('Profile')} />
+            <NewConversationButton onPress={() => navigation.navigate('CreateConversation')} />
           ),
           tabBarIcon: ({ color }) => <MaterialIcons name="chat-bubble" size={24} color={color} />
         })}
@@ -136,7 +146,7 @@ function Dashboard() {
             <ProfileButton onPress={() => navigation.navigate('Profile')} />
           ),
           headerRight: () => (
-            <NewContactButton onPress={() => navigation.navigate('Profile')} />
+            <NewContactButton onPress={() => navigation.navigate('AddContact')} />
           ),
           tabBarIcon: ({ color }) => <MaterialIcons name="people-alt" size={24} color={color} />
         })}

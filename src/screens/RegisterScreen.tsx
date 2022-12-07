@@ -25,14 +25,16 @@ export default function RegisterScreen({ navigation }: any /*RootStackScreenProp
         <ScrollView>
             <View style={styles.container}>
                 <Image source={require('../../assets/logo.png')} style={styles.logo} resizeMode="contain" />
-                <View style={styles.actionContainer}>
-                    <TextInput
-                        placeholder="username"
-                        placeholderTextColor="#777777"
-                        autoCorrect={false} style={styles.input}
-                        underlineColor={mainColor}
-                        theme={{ colors: { primary: mainColor, placeholder: mainColor } }}
-                    />
+                <View style={{ margin: 5 }}>
+                    <View style={styles.actionContainer}>
+                        <TextInput
+                            placeholder="username"
+                            placeholderTextColor="#777777"
+                            autoCorrect={false} style={styles.input}
+                            underlineColor={mainColor}
+                            theme={{ colors: { primary: mainColor, placeholder: mainColor } }}
+                        />
+                    </View>
                 </View>
                 <View style={{ margin: 5 }}>
                     <View style={styles.actionContainer}>
