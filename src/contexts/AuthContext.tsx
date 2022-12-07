@@ -1,9 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import AuthApi from "../api/AuthApi";
+import AuthApi from "../../api/AuthApi";
 import * as SecureStore from 'expo-secure-store';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwt_decode from "jwt-decode";
-import { getAccessToken } from "../api/AuthUtils";
+import { getAccessToken } from "../../api/AuthUtils";
 
 function isTokenExpired(token: string) {
   const decodedToken: any = jwt_decode(token);

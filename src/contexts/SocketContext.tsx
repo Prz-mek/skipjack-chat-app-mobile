@@ -4,7 +4,7 @@ import { API_ADDRESS } from "@env";
 
 import * as SecureStore from 'expo-secure-store';
 import { useAuthContext } from './AuthContext';
-import { getAccessToken } from '../api/AuthUtils';
+import { getAccessToken } from '../../api/AuthUtils';
 
 interface ISocketContext {
     socket: any;

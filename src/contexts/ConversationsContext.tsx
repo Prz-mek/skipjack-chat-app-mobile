@@ -1,9 +1,10 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
-import ConversationApi from "../api/ConversationApi";
-import MessageApi from "../api/MessageApi";
+import ConversationApi from "../../api/ConversationApi";
+import MessageApi from "../../api/MessageApi";
 import { ChatRoom, ChatRoomListItem, Message } from "../types";
 import { useAuthContext } from "./AuthContext";
 import { useSocket } from "./SocketContext";
+import ConversationListData from "../mock/ConversationListData";
 
 interface IConversationsContext {
     conversations: ChatRoom[] | any[];
@@ -38,14 +39,15 @@ function ConversationsProvider(props: any) {
     const socketM = useSocket();        // Of course | Why???
 
     const loadConversations = () => {
-        ConversationApi.getCoversations().then(res => {
-            if (res.ok) {
-                return res.json();
-            }
-            else throw Error("Here it is!! Problem!");
-        }).then(data => {
-            setConversations(data);
-        }).catch(error => console.log("here"));
+        // ConversationApi.getCoversations().then(res => {
+        //     if (res.ok) {
+        //         return res.json();
+        //     }
+        //     else throw Error("Here it is!! Problem!");
+        // }).then(data => {
+        //     setConversations(data);
+        // }).catch(error => console.log("here"));
+        setConversations(ConversationListData);
     }
 
     const loadMessages = (id: string) => {

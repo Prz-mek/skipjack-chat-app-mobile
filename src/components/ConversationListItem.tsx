@@ -1,38 +1,38 @@
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, Image, TouchableWithoutFeedback, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { useConversations } from "../contexts/ConversationsContext";
-import { ChatRoomListItem } from "../types";
+import { IConversationListItem } from "../types";
 
 export interface IChatListItemProps {
-    chatRoom: ChatRoomListItem;
+    chatRoom: IConversationListItem;
 }
 
 export default function ConversationListItem(props: IChatListItemProps) {
     const { chatRoom } = props;
 
-    const { selectConversation } = useConversations();
-    //const navigation = useNavigation();
+    // const { selectConversation } = useConversations();
+    const navigation = useNavigation();
 
-    // const onClick = () => {
-    //     //const s: string = chatRoom.id;
-    //     selectConversation(chatRoom.id.toString());
-    //     navigation.navigate('ChatRoom', { id: chatRoom.name });
-    // }
+    const onPress = () => {
+        //const s: string = chatRoom.id;
+        //selectConversation(chatRoom.id.toString());
+        navigation.navigate("ConversationRoom" as never, { id: chatRoom.name } as never);
+    }
 
     return (
-        <TouchableWithoutFeedback>
+        <Pressable onPress={onPress}>
             <View style={styles.container}>
                 <View style={styles.leftContainer}>
-                    <Image source={require('./phone.png')} style={styles.avatar} />
+                    <Image source={{uri: chatRoom.imageUri}} style={styles.avatar} />
                     <View style={styles.midContainer}>
                         <Text style={styles.conversationName}>{chatRoom.name}</Text>
-                        <Text style={styles.lastMessage}>{chatRoom.latestMessage?.text}</Text>
+                        <Text style={styles.lastMessage}>{`${chatRoom.lastMessage?.senderName}: ${chatRoom.lastMessage?.text}`}</Text>
                     </View>
                 </View>
 
-                {/* <Text>{chatRoom.latestMessage && moment(chatRoom.latestMessage.createdAt).format("DD/MM/YYYY")}</Text> */}
+                {/* <Text>{chatRoom.lastMessage.createdAt}</Text> */}
             </View>
-        </TouchableWithoutFeedback>
+        </Pressable>
     )
 }
 
@@ -50,8 +50,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
     },
     avatar: {
-        width: 60,
-        height: 60,
+        width: 50,
+        height: 50,
         marginRight: 10,
         borderRadius: 25,
     },
