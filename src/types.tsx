@@ -1,7 +1,8 @@
-
-export interface User {
+export interface IProfile {
     id: string;
-    name: string;
+    username: string;
+    email: string
+    imageUri: string | null;
 }
 
 export interface IConversationListItem {
@@ -9,22 +10,24 @@ export interface IConversationListItem {
     name: string;
     imageUri: string;
     lastMessage: {
-        senderName: string,
+        senderId: string,
+        senderUsername: string,
         text: string,
-        createdAt: string
+        createdAt: string,
+        isRead: boolean,
     };
 }
 
 export interface IContactListItem {
     id: string;
-    name: string;
-    imageUri: string;
+    username: string;
+    imageUri: string | null;
 }
 
 export interface IMessage {
     id: string,
     senderId: string,
-    senderName: string,
+    senderUsername: string,
     text: string,
     createdAt: string
 }

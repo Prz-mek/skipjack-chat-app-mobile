@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 import { StyleSheet, TextInput, View, Text } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
+import { useConversations } from "../contexts/ConversationsContext";
 //import { useConversations } from "../contexts/ConversationsContext";
 
 
 export default function MessageInput() {
     const [message, setMessage] = useState("");
-    //const {sendMessage} = useConversations();
+    const {sendMessage} = useConversations();
 
     const onSendMessage = () => {
-        //console.warn("Sending: " + message);
-
-        // send the message to the backend
-        //sendMessage(message);
-        //setMessage("");
+        console.warn("Sending: " + message);
+        sendMessage(message);
+        setMessage("");
     }
     
     return (

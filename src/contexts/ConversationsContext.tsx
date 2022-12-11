@@ -1,15 +1,15 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import ConversationApi from "../../api/ConversationApi";
 import MessageApi from "../../api/MessageApi";
-import { ChatRoom, ChatRoomListItem, Message } from "../types";
+import { IConversationListItem, IMessage } from "../types";
 import { useAuthContext } from "./AuthContext";
 import { useSocket } from "./SocketContext";
 import ConversationListData from "../mock/ConversationListData";
 
 interface IConversationsContext {
-    conversations: ChatRoom[] | any[];
-    messages: Message[] | any[];
-    selectedConversation: ChatRoomListItem | undefined;
+    conversations: IConversationListItem[] | any[];
+    messages: IMessage[] | any[];
+    selectedConversation: IConversationListItem | undefined;
     createConversation: (name: string, participants: string[]) => void;
     selectConversation: (id: string) => void;
     accessPrivateConversation: (id: string) => void;
@@ -29,44 +29,41 @@ function useConversations() {
 
 function ConversationsProvider(props: any) {
     let auth = useAuthContext();
-    //const initialContacts: Conversation[] = [];
-    const [conversations, setConversations] = useState<ChatRoomListItem[] | any[]>([]);
-    const [messages, setMessages] = useState<Message[] | any[]>([]);
+    const [conversations, setConversations] = useState<IConversationListItem[]>([]);
+    const [messages, setMessages] = useState<IMessage[]>([]);
     const [selectedConversationId, setSelectedConversationId] = useState<string>();
 
-    const [selectedConversation, setSelectedConversation] = useState<ChatRoomListItem | any | undefined>(undefined);    // Why any???
+    const [selectedConversation, setSelectedConversation] = useState<IConversationListItem | undefined>(undefined);
 
     const socketM = useSocket();        // Of course | Why???
 
     const loadConversations = () => {
-        // ConversationApi.getCoversations().then(res => {
-        //     if (res.ok) {
-        //         return res.json();
-        //     }
-        //     else throw Error("Here it is!! Problem!");
-        // }).then(data => {
-        //     setConversations(data);
-        // }).catch(error => console.log("here"));
-        setConversations(ConversationListData);
+        ConversationApi.getCoversations().then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                return res.text().then(text => { throw new Error(text) })
+            }
+        }).then(data => {
+            setConversations(data);
+        }).catch(error => console.log(error));
     }
 
     const loadMessages = (id: string) => {
         MessageApi.getMessages(id).then(res => {
             if (res.ok) {
                 return res.json();
+            } else {
+                return res.text().then(text => { throw new Error(text) })
             }
         }).then(data => {
-            const user: any = auth?.user;
-            const formatedMessages: Message[] = data.map((message: any): Message => {
-                return { ...message, fromMe: message.senderId === user.id };
-            });
+            const formatedMessages: IMessage[] = data;
             setMessages(formatedMessages);
         }).catch(error => console.log(error));
     }
 
     const onReceiveMessage = ({ conversationId, message }: any) => {
         const user: any = auth?.user;
-        message = { ...message, fromMe: message.senderId === user.id };
 
         if (conversations.find((c: any) => c.id === conversationId) == null) {
             loadConversations();
@@ -77,7 +74,7 @@ function ConversationsProvider(props: any) {
             setConversations(prevConversations => {
                 const newConversations = prevConversations.map(conversation => {
                     if (conversation.id.toString() === conversationId) {
-                        return { ...conversation, latestMessage: message };
+                        return { ...conversation, lastMessage: message };
                     } else {
                          return conversation;
                     }
@@ -104,7 +101,6 @@ function ConversationsProvider(props: any) {
 
     function sendMessage(text: string) {
         let socket: any = socketM;
-        console.log({ conversation: selectedConversationId, sender: auth?.user?.id, text: text });
         socket?.emit("send-message", { conversation: selectedConversationId, sender: auth?.user?.id, text: text });
     }
 
@@ -118,11 +114,11 @@ function ConversationsProvider(props: any) {
         return id === selectedConversationId;
     }
 
-    async function createConversation(name: string, recipiants: string[]) {     //crates conversation
+    async function createConversation(name: string, recipiants: string[]) {
         if (auth?.user) {
             ConversationApi.createConveration(name, [...recipiants, auth.user.id]).catch(error => console.log(error));
         }
-        loadConversations();        //load conversation
+        loadConversations();
     }
 
     async function accessPrivateConversation(id: string) {

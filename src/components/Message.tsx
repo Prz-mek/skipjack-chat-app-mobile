@@ -25,7 +25,7 @@ export default function Message({message}: IMessageProps) {
         </View>
       ) : (
         <View>
-          <Text style={ styles.leftName }>{message.senderName}</Text>
+          <Text style={ styles.leftName }>{message.senderUsername}</Text>
           <View style={[styles.container, styles.leftContainer]}>
               <Text style={{ color: 'black'}}>{message.text}</Text>
           </View>

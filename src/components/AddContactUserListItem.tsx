@@ -1,10 +1,7 @@
-import { useNavigation } from "@react-navigation/native";
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
-import { useConversations } from "../contexts/ConversationsContext";
 import { IContactListItem } from "../types";
-import { Checkbox } from 'react-native-paper';
-import { useState } from "react";
 import { MaterialIcons } from '@expo/vector-icons';
+import UserApi from "../../api/UserApi";
 
 export interface IChatListItemProps {
     contact: IContactListItem;
@@ -13,13 +10,8 @@ export interface IChatListItemProps {
 export default function AddContactUserListItem(props: IChatListItemProps) {
     const { contact } = props;
 
-    const [checked, setChecked] = useState(false);
-
-    const navigation = useNavigation();
-
     const onPress = () => {
-        // Get conversation room id from request /access
-
+        UserApi.addContact(contact.id).catch(error => console.log(error));
     }
 
     return (
@@ -28,7 +20,7 @@ export default function AddContactUserListItem(props: IChatListItemProps) {
                 <View style={styles.leftContainer}>
                     <Image source={{ uri: contact.imageUri }} style={styles.avatar} />
                     <View style={styles.midContainer}>
-                        <Text style={styles.conversationName}>{contact.name}</Text>
+                        <Text style={styles.conversationName}>{contact.username}</Text>
                     </View>
                 </View>
                 <Pressable onPress={onPress} style={styles.endContainer}>

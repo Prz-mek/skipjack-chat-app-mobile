@@ -2,18 +2,20 @@ import React from "react";
 import { FlatList, SafeAreaView, StyleSheet } from "react-native";
 import Message from "../components/Message";
 import MessageInput from "../components/MessageInput";
-import MessageListData from "../mock/MessageListData";
+import { useConversations } from "../contexts/ConversationsContext";
 
 
 export default function ConversationScreen({ navigation }: any) {
+
+  const { messages } = useConversations();
+
   return (
     <SafeAreaView style={styles.page}>
       <FlatList
-        data={MessageListData.reverse()}
+        data={messages}
         renderItem={({ item }) => (
           <Message message={item} />
         )}
-        inverted
       />
       <MessageInput />
     </SafeAreaView>
@@ -22,7 +24,6 @@ export default function ConversationScreen({ navigation }: any) {
 
 const styles = StyleSheet.create({
   page: {
-    //backgroundColor: "white",
     flex: 1,
   },
 });

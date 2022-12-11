@@ -1,46 +1,86 @@
 import { useActionSheet } from "@expo/react-native-action-sheet";
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Image, Pressable } from "react-native";
 import ProfileData from "../mock/ProfileData";
+import * as ImagePicker from 'expo-image-picker';
+import "../../i18n.config";
+import { useTranslation } from "react-i18next";
 
 import {
-  //Avatar,
-  Title,
   Text,
   TouchableRipple,
 } from 'react-native-paper';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
+import UserApi from "../../api/UserApi";
 
 const mainColor = '#f4511e';
 
 
 export default function ProfileScreen({ navigation }: any) {
-
   const { showActionSheetWithOptions } = useActionSheet();
+  const profile = ProfileData;
+
+  const { t } = useTranslation();
+
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+    });
+
+    if (!result.canceled && result.assets[0]) {
+      uploadPicture(result.assets[0]);
+    }
+  };
+
+  const takePhoto = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      aspect: [1, 1],
+    });
+
+    if (!result.canceled && result.assets[0]) {
+      uploadPicture(result.assets[0]);
+    }
+  };
+
+  async function uploadPicture(photo: any) {
+    const data = new FormData();
+    data.append('photo', {
+      name: new Date() + "_profile",
+      type: photo.type,
+      uri: photo.uri,
+    } as any);
+
+    UserApi.uploadAvatar(data)
+      .then((response) => response.json())
+      .then((response) => {
+        console.log('response', response);
+      })
+      .catch((error) => {
+        console.log('error', error);
+      });
+  }
+
 
   const onPressPicture = () => {
-    const options = ['Delete', 'Save', 'Cancel'];
-    const destructiveButtonIndex = 0;
-    const cancelButtonIndex = 2;
+    const options = ['Take photo', 'Get from gallery'];
+    const title = "Change profile picture";
 
     showActionSheetWithOptions({
       options,
-      cancelButtonIndex,
-      destructiveButtonIndex
+      title
     }, (selectedIndex) => {
       switch (selectedIndex) {
+        case 0:
+          takePhoto();
+          break;
+
         case 1:
-          // Save
+          pickImage();
           break;
-
-        case destructiveButtonIndex:
-          // Delete
-          break;
-
-        case cancelButtonIndex:
-        // Canceled
       }
     });
   }
@@ -50,34 +90,34 @@ export default function ProfileScreen({ navigation }: any) {
     <View style={styles.container}>
       <View style={styles.userInfo}>
         <Pressable onPress={onPressPicture}>
-          <Image source={{ uri: ProfileData.imageUri }} style={styles.profilePicture} />
+          <Image source={profile.imageUri ? { uri: profile.imageUri } : require("../../assets/logo.png")} style={styles.profilePicture} />
         </Pressable>
-        <Text style={styles.username}>{ProfileData.name}</Text>
-        <Text style={styles.email}>{ProfileData.email}</Text>
+        <Text style={styles.username}>{profile.username}</Text>
+        <Text style={styles.email}>{profile.email}</Text>
       </View>
-      <View  style={styles.menuContainer}>
-        <TouchableRipple onPress={() => {}}>
+      <View style={styles.menuContainer}>
+        <TouchableRipple onPress={() => navigation.navigate("ChangeLanguage")}>
           <View style={styles.menuItem}>
-            <MaterialIcons name="language" color={mainColor} size={26}/>
-            <Text style={styles.menuItemText}>Language</Text>
+            <MaterialIcons name="language" color={mainColor} size={26} />
+            <Text style={styles.menuItemText}>{t("profile.changeLanguage")}</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => navigation.navigate("ChangeUsername")}>
           <View style={styles.menuItem}>
-            <MaterialCommunityIcons name="at" color={mainColor} size={26}/>
-            <Text style={styles.menuItemText}>Change Username</Text>
+            <MaterialCommunityIcons name="at" color={mainColor} size={26} />
+            <Text style={styles.menuItemText}>{t("profile.changeUsername")}</Text>
           </View>
         </TouchableRipple>
         <TouchableRipple onPress={() => navigation.navigate("ChangePassword")}>
           <View style={styles.menuItem}>
-            <MaterialCommunityIcons name="lock-outline" color={mainColor} size={26}/>
-            <Text style={styles.menuItemText}>Change Password</Text>
+            <MaterialCommunityIcons name="lock-outline" color={mainColor} size={26} />
+            <Text style={styles.menuItemText}>{t("profile.changePassword")}</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => {}}>
+        <TouchableRipple onPress={() => { }}>
           <View style={styles.menuItem}>
-            <MaterialCommunityIcons name="logout" color={mainColor} size={26}/>
-            <Text style={styles.menuItemText}>Log out</Text>
+            <MaterialCommunityIcons name="logout" color={mainColor} size={26} />
+            <Text style={styles.menuItemText}>{t("profile.logOut")}</Text>
           </View>
         </TouchableRipple>
       </View>

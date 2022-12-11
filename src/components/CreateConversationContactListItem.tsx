@@ -13,7 +13,6 @@ export interface ICreateConversationContactListItemProps {
 
 export default function CreateConversationContactListItem(props: ICreateConversationContactListItemProps) {
     const { isChecked, contact, onPress } = props;
-
     const navigation = useNavigation();
 
 
@@ -23,7 +22,7 @@ export default function CreateConversationContactListItem(props: ICreateConversa
                 <View style={styles.leftContainer}>
                     <Image source={{ uri: contact.imageUri }} style={styles.avatar} />
                     <View style={styles.midContainer}>
-                        <Text style={styles.userName}>{contact.name}</Text>
+                        <Text style={styles.userName}>{contact.username}</Text>
                     </View>
                 </View>
                 <View style={styles.endContainer}>

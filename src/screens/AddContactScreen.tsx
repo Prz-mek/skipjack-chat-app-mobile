@@ -1,14 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, View, StyleSheet } from "react-native";
+import { Searchbar } from "react-native-paper";
+import UserApi from "../../api/UserApi";
 import AddContactUserListItem from "../components/AddContactUserListItem";
-import ContactListItem from "../components/ContactListItem";
-import ContactListData from "../mock/ContactListData";
+import { IContactListItem } from "../types";
+
+const mainColor = '#f4511e';
 
 export default function AddContactScreen() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchedUsers, setSearchedUsers] = useState<IContactListItem[]>([]);
+
+  const onChangeSearch = (query: string) => {
+    setSearchQuery(query.toLowerCase());
+  }
+
+  useEffect(() => {
+    UserApi.filterUsers("").then(res => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return res.text().then(text => { throw new Error(text) })
+      }
+    }).then(data => {
+      console.log(data);
+      setSearchedUsers(data);
+    });
+  }, [])
 
   return (
     <View style={styles.container}>
-      <FlatList style={{ width: '100%' }} data={ContactListData} renderItem={({ item }) => <AddContactUserListItem contact={item} />} />
+      <Searchbar
+        placeholder="Search"
+        onChangeText={onChangeSearch}
+        value={searchQuery}
+        theme={{ colors: { primary: mainColor, placeholder: mainColor } }}
+        style={{backgroundColor: 'white', borderColor: mainColor}}
+      />
+      <FlatList style={{ width: '100%' }} data={searchedUsers} renderItem={({ item }) => <AddContactUserListItem contact={item} />} />
     </View>
   );
 }

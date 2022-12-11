@@ -1,7 +1,5 @@
 const LOCAL_URL = "/api/users"
 import {API_ADDRESS} from '@env';
-
-import * as SecureStore from 'expo-secure-store';
 import { getAccessToken } from './AuthUtils';
 
 export default class UserApi {
@@ -12,6 +10,34 @@ export default class UserApi {
                 "Content-Type": "application/json",
                 "Authorization": "Bearer " + getAccessToken()
             }
+        });
+
+        return response;
+    }
+
+    static async filterUsers(quary: string): Promise<Response> {
+        const body = JSON.stringify({ quary });
+        let response = await fetch(`${API_ADDRESS}${LOCAL_URL}/filter`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + getAccessToken()
+            },
+            body: body
+        });
+
+        return response;
+    }
+
+    static async addContact(userId: string): Promise<Response> {
+        const body = JSON.stringify({ userId });
+        let response = await fetch(`${API_ADDRESS}${LOCAL_URL}/contacts`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + getAccessToken()
+            },
+            body: body
         });
 
         return response;
@@ -30,12 +56,14 @@ export default class UserApi {
     }
 
     static async uploadAvatar(image: FormData): Promise<Response> {
-        console.log("Please work");
+        console.log(image)
         let response = await fetch(`${API_ADDRESS}${LOCAL_URL}/avatar`, {
             method: "POST",
-            // headers: {
-            //     "Authorization": "Bearer " + getAccessToken()
-            // },
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "multipart/form-data",
+                "Authorization": "Bearer " + getAccessToken()
+            },
             body: image
         });
 
@@ -44,15 +72,15 @@ export default class UserApi {
         return response;
     }
 
-    static async removeAvatar(): Promise<Response> {
-        let response = await fetch(`${API_ADDRESS}${LOCAL_URL}/avatar`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer " + getAccessToken()
-            }
-        });
+    // static async removeAvatar(): Promise<Response> {
+    //     let response = await fetch(`${API_ADDRESS}${LOCAL_URL}/avatar`, {
+    //         method: "DELETE",
+    //         headers: {
+    //             "Content-Type": "application/json",
+    //             "Authorization": "Bearer " + getAccessToken()
+    //         }
+    //     });
 
-        return response;
-    }
+    //     return response;
+    // }
 }

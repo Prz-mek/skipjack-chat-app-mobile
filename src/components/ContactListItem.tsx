@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
+import ConversationApi from "../../api/ConversationApi";
 import { useConversations } from "../contexts/ConversationsContext";
 import { IContactListItem } from "../types";
 
@@ -9,12 +10,21 @@ export interface IChatListItemProps {
 
 export default function ContactListItem(props: IChatListItemProps) {
     const { contact } = props;
-
+    const { selectConversation } = useConversations();
     const navigation = useNavigation();
 
     const onPress = () => {
         // Get conversation room id from request /access
-        navigation.navigate("ConversationRoom" as never, { id: contact.name } as never);
+        ConversationApi.accessDirectConveration(contact.id).then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                return res.text().then(text => { throw new Error(text) })
+            }
+        }).then(conversation => {
+            selectConversation(conversation.id.toString());
+            navigation.navigate("ConversationRoom" as never, { id: conversation.name } as never);
+        }).catch(error => console.log(error));
     }
 
     return (
@@ -23,7 +33,7 @@ export default function ContactListItem(props: IChatListItemProps) {
                 <View style={styles.leftContainer}>
                     <Image source={{uri: contact.imageUri}} style={styles.avatar} />
                     <View style={styles.midContainer}>
-                        <Text style={styles.conversationName}>{contact.name}</Text>
+                        <Text style={styles.conversationName}>{contact.username}</Text>
                     </View>
                 </View>
             </View>

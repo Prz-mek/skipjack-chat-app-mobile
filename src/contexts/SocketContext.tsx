@@ -36,7 +36,6 @@ export function SocketProvider(props: any) {
   // }
 
   useEffect(() => {
-    console.log(API_ADDRESS);
     const token = "Bearer " + getAccessToken();
       const newSocket = io(
           API_ADDRESS,
@@ -48,7 +47,7 @@ export function SocketProvider(props: any) {
         console.log(error);
       });
     return () => {
-      newSocket.close()
+      socket.close()
     };
   }, [])
 

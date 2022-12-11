@@ -3,33 +3,30 @@ import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { useConversations } from "../contexts/ConversationsContext";
 import { IConversationListItem } from "../types";
 
-export interface IChatListItemProps {
-    chatRoom: IConversationListItem;
+export interface IConversationListItemProps {
+    conversation: IConversationListItem;
 }
 
-export default function ConversationListItem(props: IChatListItemProps) {
-    const { chatRoom } = props;
-
-    // const { selectConversation } = useConversations();
+export default function ConversationListItem(props: IConversationListItemProps) {
+    const { conversation } = props;
+    const { selectConversation } = useConversations();
     const navigation = useNavigation();
 
     const onPress = () => {
-        //const s: string = chatRoom.id;
-        //selectConversation(chatRoom.id.toString());
-        navigation.navigate("ConversationRoom" as never, { id: chatRoom.name } as never);
+        selectConversation(conversation.id.toString());
+        navigation.navigate("ConversationRoom" as never, { id: conversation.name } as never);
     }
 
     return (
         <Pressable onPress={onPress}>
             <View style={styles.container}>
                 <View style={styles.leftContainer}>
-                    <Image source={{uri: chatRoom.imageUri}} style={styles.avatar} />
+                    <Image source={{uri: conversation.imageUri}} style={styles.avatar} />
                     <View style={styles.midContainer}>
-                        <Text style={styles.conversationName}>{chatRoom.name}</Text>
-                        <Text style={styles.lastMessage}>{`${chatRoom.lastMessage?.senderName}: ${chatRoom.lastMessage?.text}`}</Text>
+                        <Text style={styles.conversationName}>{conversation.name}</Text>
+                        <Text style={styles.lastMessage}>{`${conversation.lastMessage?.senderUsername}: ${conversation.lastMessage?.text}`}</Text>
                     </View>
                 </View>
-
                 {/* <Text>{chatRoom.lastMessage.createdAt}</Text> */}
             </View>
         </Pressable>

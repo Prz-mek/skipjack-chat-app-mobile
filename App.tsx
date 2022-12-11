@@ -21,6 +21,11 @@ import NewContactButton from './src/components/NewContactButton';
 import NewConversationButton from './src/components/NewConversationButton';
 import AddContactScreen from './src/screens/AddContactScreen';
 import CreateConversationScreen from './src/screens/CreateConversationScreen';
+import ChangeLanguageScreen from './src/screens/ChangeLanguageScreen';
+import "./i18n.config";
+import { useTranslation } from 'react-i18next';
+import { ConversationsProvider } from './src/contexts/ConversationsContext';
+import { SocketProvider } from './src/contexts/SocketContext';
 
 
 const mainColor = '#f4511e';
@@ -44,8 +49,13 @@ const isAuthenticated = true;
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
+  const { t } = useTranslation();
+
   return (
     <AuthProvider>
+      <SocketProvider>
+      <ConversationsProvider>
       <ActionSheetProvider>
         <PaperProvider>
           <NavigationContainer>
@@ -61,28 +71,29 @@ export default function App() {
             }}>
               {isAuthenticated ? (
                 <Stack.Group>
-                  <Stack.Screen
-                    name="Dashboard"
-                    component={Dashboard}
-                    options={({ navigation }) => ({
-                      headerShown: false,
-                      headerRight: () => (
-                        <Button
-                          onPress={() => navigation.navigate('Profile')}
-                          title="Profile"
-                          color="#fff"
-                        />
-                      ),
-                    })}
-                  />
-                  <Stack.Screen name="Profile" component={ProfileScreen} />
-                  <Stack.Screen name="ChangeUsername" component={ChangeUsernameScreen} options={{ title: "Change username" }} />
-                  <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ title: "Change password" }} />
-                  <Stack.Screen name="ConversationRoom" component={ConversationScreen} options={{
-                    headerTitle: () => <ConversationTitle {...{ title: 'Ola' }} />,
-                  }} />
-                  <Stack.Screen name="AddContact" component={AddContactScreen} options={{ title: "Add new contact" }} />
-                  <Stack.Screen name="CreateConversation" component={CreateConversationScreen} options={{ title: "Create group conversation" }} />
+                    <Stack.Screen
+                      name="InnerTabNavigation"
+                      component={InnerTabNavigation}
+                      options={({ navigation }) => ({
+                        headerShown: false,
+                        headerRight: () => (
+                          <Button
+                            onPress={() => navigation.navigate('Profile')}
+                            title="Profile"
+                            color="#fff"
+                          />
+                        ),
+                      })}
+                    />
+                    <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: "Profil" }} />
+                    <Stack.Screen name="ChangeLanguage" component={ChangeLanguageScreen} options={{ title: "Change language" }} />
+                    <Stack.Screen name="ChangeUsername" component={ChangeUsernameScreen} options={{ title: "Change username" }} />
+                    <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ title: "Change password" }} />
+                    <Stack.Screen name="ConversationRoom" component={ConversationScreen} options={{
+                      headerTitle: () => <ConversationTitle {...{ title: 'Ola' }} />,
+                    }} />
+                    <Stack.Screen name="AddContact" component={AddContactScreen} options={{ title: "Add new contact" }} />
+                    <Stack.Screen name="CreateConversation" component={CreateConversationScreen} options={{ title: "Create group conversation" }} />
                 </Stack.Group>
               ) : (
                 <Stack.Group>
@@ -95,33 +106,33 @@ export default function App() {
           </NavigationContainer>
         </PaperProvider>
       </ActionSheetProvider>
+      </ConversationsProvider>
+      </SocketProvider>
     </AuthProvider>
   );
 }
 
 const Tab = createBottomTabNavigator();
 
-function Dashboard() {
+function InnerTabNavigation() {
   return (
-    // <SocketProvider>
-    // <ConversationsProvider>
-    <Tab.Navigator 
+    <Tab.Navigator
       initialRouteName="Conversations"
       screenOptions={{
-      headerStyle: {
-        backgroundColor: mainColor,
-      },
-      headerTintColor: '#fff',
-      headerTitleStyle: {
-        fontWeight: 'bold',
-      },
-      tabBarShowLabel: false,
-      tabBarActiveTintColor: "white",
-      tabBarInactiveTintColor: '#f4a15e',
-      tabBarStyle: {
-        backgroundColor: mainColor
-      }
-     }}
+        headerStyle: {
+          backgroundColor: mainColor,
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: "white",
+        tabBarInactiveTintColor: '#f4a15e',
+        tabBarStyle: {
+          backgroundColor: mainColor
+        }
+      }}
     >
       <Tab.Screen
         name="Conversations"
@@ -152,8 +163,6 @@ function Dashboard() {
         })}
       />
     </Tab.Navigator>
-    // </ConversationsProvider>
-    // </SocketProvider>
   );
 }
 
