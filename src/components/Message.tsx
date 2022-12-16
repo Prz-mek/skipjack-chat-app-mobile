@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import { useAuthContext } from '../contexts/AuthContext';
 import { IMessage } from '../types';
 
 const blue = '#f46a35';
 const grey = 'lightgrey';
 
-const myID = '2';
 
 export interface IMessageProps {
     message: IMessage;
@@ -13,7 +13,9 @@ export interface IMessageProps {
 
 export default function Message({message}: IMessageProps) {
 
-  const isMe = message.senderId === myID;
+  const { user } = useAuthContext();
+
+  const isMe = message.senderId === user?.id;
 
   return (
     

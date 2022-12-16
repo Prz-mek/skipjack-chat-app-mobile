@@ -1,8 +1,5 @@
 const LOCAL_URL = "/api/conversations"
 import { API_ADDRESS } from "@env";
-
-
-import * as SecureStore from 'expo-secure-store';
 import { getAccessToken } from "./AuthUtils";
 
 export default class ConversationApi {
@@ -35,6 +32,7 @@ export default class ConversationApi {
     }
 
     static async getCoversations(): Promise<Response> {
+        console.log(`${API_ADDRESS}${LOCAL_URL}/short`);
         let response = await fetch(`${API_ADDRESS}${LOCAL_URL}/short`, {
             method: "GET",
             headers: {

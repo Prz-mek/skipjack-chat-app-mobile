@@ -19,6 +19,8 @@ export default class MessageApi {
 
     static async getMessages(conversationId: string): Promise<Response> {
         console.log(conversationId);
+        console.log("me")
+        console.log(`${API_ADDRESS}${LOCAL_URL}`);
         const body = JSON.stringify({ conversationId });
         let response = await fetch(`${API_ADDRESS}${LOCAL_URL}`, {
             method: "PUT",

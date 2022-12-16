@@ -10,7 +10,6 @@ export default function MessageInput() {
     const {sendMessage} = useConversations();
 
     const onSendMessage = () => {
-        console.warn("Sending: " + message);
         sendMessage(message);
         setMessage("");
     }

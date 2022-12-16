@@ -8,13 +8,19 @@ import LinkLikeButton from "../components/LinkLikeButton";
 const mainColor = '#f4511e';
 
 export default function RegisterScreen({ navigation }: any /*RootStackScreenProps<'SignIn'>*/) {
+    const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
 
-    // const auth = useAuthContext();
+    const { register } = useAuthContext();
 
     const onSignUp = async () => {
-        // auth?.login(email, password).catch((err: Error) => console.error(err));        
+        if (password === confirmPassword) {
+            register(username, email, password).catch((err: Error) => console.error(err));
+        } else {
+            console.log("Paswords not equals");
+        }
     }
 
     const onToSingIn = () => {
@@ -28,6 +34,8 @@ export default function RegisterScreen({ navigation }: any /*RootStackScreenProp
                 <View style={{ margin: 5 }}>
                     <View style={styles.actionContainer}>
                         <TextInput
+                            value={username}
+                            onChangeText={setUsername}
                             placeholder="username"
                             placeholderTextColor="#777777"
                             autoCorrect={false} style={styles.input}
@@ -39,6 +47,8 @@ export default function RegisterScreen({ navigation }: any /*RootStackScreenProp
                 <View style={{ margin: 5 }}>
                     <View style={styles.actionContainer}>
                         <TextInput
+                            value={email}
+                            onChangeText={setEmail}
                             placeholder="email"
                             secureTextEntry={true}
                             placeholderTextColor="#777777"
@@ -51,6 +61,8 @@ export default function RegisterScreen({ navigation }: any /*RootStackScreenProp
                 <View style={{ margin: 5 }}>
                     <View style={styles.actionContainer}>
                         <TextInput
+                            value={password}
+                            onChangeText={setPassword}
                             placeholder="password"
                             secureTextEntry={true}
                             placeholderTextColor="#777777"
@@ -63,6 +75,8 @@ export default function RegisterScreen({ navigation }: any /*RootStackScreenProp
                 <View style={{ margin: 5 }}>
                     <View style={styles.actionContainer}>
                         <TextInput
+                            value={confirmPassword}
+                            onChangeText={setConfirmPassword}
                             placeholder="confirm password"
                             secureTextEntry={true}
                             placeholderTextColor="#777777"

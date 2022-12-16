@@ -12,10 +12,11 @@ export default function ConversationScreen({ navigation }: any) {
   return (
     <SafeAreaView style={styles.page}>
       <FlatList
-        data={messages}
+        data={JSON.parse(JSON.stringify(messages)).reverse()}
         renderItem={({ item }) => (
           <Message message={item} />
         )}
+        inverted
       />
       <MessageInput />
     </SafeAreaView>

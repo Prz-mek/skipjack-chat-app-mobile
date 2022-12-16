@@ -2,8 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import io from 'socket.io-client'
 import { API_ADDRESS } from "@env";
 
-import * as SecureStore from 'expo-secure-store';
-import { useAuthContext } from './AuthContext';
 import { getAccessToken } from '../../api/AuthUtils';
 
 interface ISocketContext {

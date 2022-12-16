@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet } from 'react-native';
-import { AuthProvider } from './src/contexts/AuthContext';
+import { AuthProvider, useAuthContext } from './src/contexts/AuthContext';
 import ConversationListScreen from './src/screens/ConversationListScreen';
 import ProfileScreen from './src/screens/ProfileScreen';
 import ContactListScreen from './src/screens/ContactListScreen';
@@ -50,66 +50,90 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
 
-  const { t } = useTranslation();
-
   return (
     <AuthProvider>
-      <SocketProvider>
-      <ConversationsProvider>
-      <ActionSheetProvider>
-        <PaperProvider>
-          <NavigationContainer>
-            <Stack.Navigator initialRouteName="Home" screenOptions={{
-              // headerShown: false,
-              headerStyle: {
-                backgroundColor: mainColor,
-              },
-              headerTintColor: '#fff',
-              headerTitleStyle: {
-                fontWeight: 'bold',
-              },
-            }}>
-              {isAuthenticated ? (
-                <Stack.Group>
-                    <Stack.Screen
-                      name="InnerTabNavigation"
-                      component={InnerTabNavigation}
-                      options={({ navigation }) => ({
-                        headerShown: false,
-                        headerRight: () => (
-                          <Button
-                            onPress={() => navigation.navigate('Profile')}
-                            title="Profile"
-                            color="#fff"
-                          />
-                        ),
-                      })}
-                    />
-                    <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: "Profil" }} />
-                    <Stack.Screen name="ChangeLanguage" component={ChangeLanguageScreen} options={{ title: "Change language" }} />
-                    <Stack.Screen name="ChangeUsername" component={ChangeUsernameScreen} options={{ title: "Change username" }} />
-                    <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ title: "Change password" }} />
-                    <Stack.Screen name="ConversationRoom" component={ConversationScreen} options={{
-                      headerTitle: () => <ConversationTitle {...{ title: 'Ola' }} />,
-                    }} />
-                    <Stack.Screen name="AddContact" component={AddContactScreen} options={{ title: "Add new contact" }} />
-                    <Stack.Screen name="CreateConversation" component={CreateConversationScreen} options={{ title: "Create group conversation" }} />
-                </Stack.Group>
-              ) : (
-                <Stack.Group>
-                  <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-                  <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
-                </Stack.Group>
-              )}
-
-            </Stack.Navigator>
-          </NavigationContainer>
-        </PaperProvider>
-      </ActionSheetProvider>
-      </ConversationsProvider>
-      </SocketProvider>
+      <MainNavigation />
     </AuthProvider>
   );
+}
+
+function MainNavigation() {
+  const { isAuthenticated } = useAuthContext();
+
+  return isAuthenticated ? <SignedInNavigation /> : <SignedOutNavigation />
+}
+
+function SignedInNavigation() {
+  return (
+    <SocketProvider>
+      <ConversationsProvider>
+        <ActionSheetProvider>
+          <PaperProvider>
+            <NavigationContainer>
+              <Stack.Navigator initialRouteName="Home" screenOptions={{
+                headerStyle: {
+                  backgroundColor: mainColor,
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                },
+              }}>
+                <Stack.Group>
+                  <Stack.Screen
+                    name="InnerTabNavigation"
+                    component={InnerTabNavigation}
+                    options={({ navigation }) => ({
+                      headerShown: false,
+                      headerRight: () => (
+                        <Button
+                          onPress={() => navigation.navigate('Profile')}
+                          title="Profile"
+                          color="#fff"
+                        />
+                      ),
+                    })}
+                  />
+                  <Stack.Screen name="Profile" component={ProfileScreen} options={{ title: "Profil" }} />
+                  <Stack.Screen name="ChangeLanguage" component={ChangeLanguageScreen} options={{ title: "Change language" }} />
+                  <Stack.Screen name="ChangeUsername" component={ChangeUsernameScreen} options={{ title: "Change username" }} />
+                  <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ title: "Change password" }} />
+                  <Stack.Screen name="ConversationRoom" component={ConversationScreen} options={{
+                    headerTitle: () => <ConversationTitle {...{ title: 'Ola' }} />,
+                  }} />
+                  <Stack.Screen name="AddContact" component={AddContactScreen} options={{ title: "Add new contact" }} />
+                  <Stack.Screen name="CreateConversation" component={CreateConversationScreen} options={{ title: "Create group conversation" }} />
+                </Stack.Group>
+              </Stack.Navigator>
+            </NavigationContainer>
+          </PaperProvider>
+        </ActionSheetProvider>
+      </ConversationsProvider>
+    </SocketProvider>
+  )
+}
+
+function SignedOutNavigation() {
+  return (
+    <PaperProvider>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Home" screenOptions={{
+          headerStyle: {
+            backgroundColor: mainColor,
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}>
+          <Stack.Group>
+            <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
+          </Stack.Group>
+        </Stack.Navigator>
+      </NavigationContainer>
+    </PaperProvider>
+  )
 }
 
 const Tab = createBottomTabNavigator();

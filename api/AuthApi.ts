@@ -1,4 +1,4 @@
-const LOCAL_URL = "/api/users"
+const LOCAL_URL = "/api/auth"
 import {API_ADDRESS} from '@env';
 
 export default class AuthApi {

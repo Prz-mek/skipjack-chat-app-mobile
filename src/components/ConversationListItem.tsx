@@ -21,10 +21,10 @@ export default function ConversationListItem(props: IConversationListItemProps) 
         <Pressable onPress={onPress}>
             <View style={styles.container}>
                 <View style={styles.leftContainer}>
-                    <Image source={{uri: conversation.imageUri}} style={styles.avatar} />
+                    <Image source={conversation.imageUri ? { uri: conversation.imageUri } : conversation.group ? require("../../assets/default-group.png") : require("../../assets/default-profile.png")} style={styles.avatar} />
                     <View style={styles.midContainer}>
                         <Text style={styles.conversationName}>{conversation.name}</Text>
-                        <Text style={styles.lastMessage}>{`${conversation.lastMessage?.senderUsername}: ${conversation.lastMessage?.text}`}</Text>
+                        { conversation.lastMessage ? <Text style={styles.lastMessage}>{`${conversation.lastMessage?.senderUsername}: ${conversation.lastMessage?.text}`}</Text> : <View></View> }
                     </View>
                 </View>
                 {/* <Text>{chatRoom.lastMessage.createdAt}</Text> */}

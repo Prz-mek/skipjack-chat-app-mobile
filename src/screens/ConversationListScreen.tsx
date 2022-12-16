@@ -2,7 +2,7 @@ import React from "react";
 import { FlatList, View, StyleSheet } from "react-native";
 import ConversationListItem from "../components/ConversationListItem";
 import { useConversations } from "../contexts/ConversationsContext";
-import ConversationListData from "../mock/ConversationListData";
+import { IConversationListItem } from "../types";
 
 export default function ConversationListScreen() {
 
@@ -10,7 +10,7 @@ export default function ConversationListScreen() {
 
   return (
     <View style={styles.container}>
-      <FlatList style={{ width: '100%' }} data={conversations} renderItem={({ item }) => <ConversationListItem conversation={item} />} />
+      <FlatList style={{ width: '100%' }} data={JSON.parse(JSON.stringify(conversations)).sort((e1: IConversationListItem, e2: IConversationListItem) => e1.lastMessage.createdAt <= e2.lastMessage.createdAt ? 1 : -1)} renderItem={({ item }) => <ConversationListItem conversation={item} />} />
     </View>
   );
 }

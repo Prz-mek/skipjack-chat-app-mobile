@@ -18,7 +18,7 @@ export default function ProfileButton(props: IProfileButtonProps) {
         <Pressable onPress={props.onPress} style={{marginLeft: 10}}>
             <Image
                 source={
-                    profile?.imageUri ? {uri: profile.imageUri} : require("../../assets/logo.png")
+                    profile?.imageUri ? {uri: profile.imageUri} : require("../../assets/default-profile.png")
                 }
                 style={{ width: 40, height: 40, borderRadius: 30 }}
             />

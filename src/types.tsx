@@ -8,7 +8,9 @@ export interface IProfile {
 export interface IConversationListItem {
     id: string;
     name: string;
-    imageUri: string;
+    group: boolean;
+    imageUri: string | null | undefined;
+    isLastMessageNotRead: boolean;
     lastMessage: {
         senderId: string,
         senderUsername: string,
@@ -21,7 +23,7 @@ export interface IConversationListItem {
 export interface IContactListItem {
     id: string;
     username: string;
-    imageUri: string | null;
+    imageUri: string | null | undefined;
 }
 
 export interface IMessage {

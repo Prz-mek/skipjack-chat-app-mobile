@@ -22,6 +22,7 @@ export default function ContactListItem(props: IChatListItemProps) {
                 return res.text().then(text => { throw new Error(text) })
             }
         }).then(conversation => {
+            console.log(conversation);
             selectConversation(conversation.id.toString());
             navigation.navigate("ConversationRoom" as never, { id: conversation.name } as never);
         }).catch(error => console.log(error));
@@ -31,7 +32,7 @@ export default function ContactListItem(props: IChatListItemProps) {
         <Pressable onPress={onPress}>
             <View style={styles.container}>
                 <View style={styles.leftContainer}>
-                    <Image source={{uri: contact.imageUri}} style={styles.avatar} />
+                    <Image source={ contact.imageUri ? {uri: contact.imageUri} : require("../../assets/default-profile.png")} style={styles.avatar} />
                     <View style={styles.midContainer}>
                         <Text style={styles.conversationName}>{contact.username}</Text>
                     </View>

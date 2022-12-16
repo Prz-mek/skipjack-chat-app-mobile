@@ -20,7 +20,7 @@ export default function CreateConversationContactListItem(props: ICreateConversa
         <Pressable onPress={onPress}>
             <View style={styles.container}>
                 <View style={styles.leftContainer}>
-                    <Image source={{ uri: contact.imageUri }} style={styles.avatar} />
+                    <Image source={ contact.imageUri ? { uri: contact.imageUri } : require("../../assets/default-profile.png")} style={styles.avatar} />
                     <View style={styles.midContainer}>
                         <Text style={styles.userName}>{contact.username}</Text>
                     </View>

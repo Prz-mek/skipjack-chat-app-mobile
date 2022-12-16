@@ -59,6 +59,7 @@ function ConversationsProvider(props: any) {
         }).then(data => {
             const formatedMessages: IMessage[] = data;
             setMessages(formatedMessages);
+            console.log(formatedMessages)
         }).catch(error => console.log(error));
     }
 

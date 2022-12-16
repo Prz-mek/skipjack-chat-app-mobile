@@ -11,10 +11,10 @@ export default function LoginScreen({ navigation }: any /*RootStackScreenProps<'
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    // const auth = useAuthContext();
+    const { login } = useAuthContext();
 
     const onSignIn = async () => {
-        // auth?.login(email, password).catch((err: Error) => console.error(err));        
+        login(email, password).catch((err: Error) => console.error(err));        
     }
 
     const onToSingUp = () => {
@@ -28,6 +28,8 @@ export default function LoginScreen({ navigation }: any /*RootStackScreenProps<'
                 <View style={{ margin: 5 }}>
                     <View style={styles.actionContainer}>
                         <TextInput
+                            value={email}
+                            onChangeText={setEmail}
                             placeholder="email"
                             placeholderTextColor="#777777"
                             autoCorrect={false} style={styles.input}
@@ -39,6 +41,8 @@ export default function LoginScreen({ navigation }: any /*RootStackScreenProps<'
                 <View style={{ margin: 5 }}>
                     <View style={styles.actionContainer}>
                         <TextInput
+                            value={password}
+                            onChangeText={setPassword}
                             placeholder="password"
                             secureTextEntry={true}
                             placeholderTextColor="#777777"

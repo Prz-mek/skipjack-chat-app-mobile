@@ -14,6 +14,7 @@ import {
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import UserApi from "../../api/UserApi";
+import { useAuthContext } from "../contexts/AuthContext";
 
 const mainColor = '#f4511e';
 
@@ -21,6 +22,8 @@ const mainColor = '#f4511e';
 export default function ProfileScreen({ navigation }: any) {
   const { showActionSheetWithOptions } = useActionSheet();
   const profile = ProfileData;
+  
+  const {logout} = useAuthContext();
 
   const { t } = useTranslation();
 
@@ -90,7 +93,7 @@ export default function ProfileScreen({ navigation }: any) {
     <View style={styles.container}>
       <View style={styles.userInfo}>
         <Pressable onPress={onPressPicture}>
-          <Image source={profile.imageUri ? { uri: profile.imageUri } : require("../../assets/logo.png")} style={styles.profilePicture} />
+          <Image source={profile.imageUri ? { uri: profile.imageUri } : require("../../assets/default-profile.png")} style={styles.profilePicture} />
         </Pressable>
         <Text style={styles.username}>{profile.username}</Text>
         <Text style={styles.email}>{profile.email}</Text>
@@ -114,7 +117,7 @@ export default function ProfileScreen({ navigation }: any) {
             <Text style={styles.menuItemText}>{t("profile.changePassword")}</Text>
           </View>
         </TouchableRipple>
-        <TouchableRipple onPress={() => { }}>
+        <TouchableRipple onPress={logout}>
           <View style={styles.menuItem}>
             <MaterialCommunityIcons name="logout" color={mainColor} size={26} />
             <Text style={styles.menuItemText}>{t("profile.logOut")}</Text>

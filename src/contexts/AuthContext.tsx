@@ -16,6 +16,7 @@ function isTokenExpired(token: string) {
 }
 
 interface IAuthContext {
+  isAuthenticated: boolean;
   user: IProfile | null;
   authToken: string | null;
   register: (username: string, email: string, password: string) => Promise<void>;
@@ -34,14 +35,9 @@ const useAuthContext = () => {
 };
 
 function AuthProvider(props: any) {
-  const [authToken, setAuthToken] = useState<string | null>(getAccessToken());
-  // TODO
-  const [user, setUser] = useState<IProfile | null>({
-    id: '631ec12dbbc16dc34d100451',
-    username: 'Ala',
-    email: "ala@ala.com",
-    imageUri: null
-  });
+  const [authToken, setAuthToken] = useState<string | null>(null);
+  const [user, setUser] = useState<IProfile | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   // Local methods
   const getAuthFromStorage = async () => {
@@ -51,14 +47,15 @@ function AuthProvider(props: any) {
     if (token && !isTokenExpired(token)) {
       setUser(user);
       setAuthToken(token);
+      setIsAuthenticated(true);
     } else {
-      //logout();
+      logout();
     }
   }
 
   // Use Effect
 
-  //useEffect(() => { getAuthFromStorage() }, []);
+  useEffect(() => { getAuthFromStorage() }, []);
 
   // Export methods
 
@@ -74,8 +71,9 @@ function AuthProvider(props: any) {
     return AuthApi.login(email, password).then(res => {
       if (res.ok) {
         return res.json();
+      } else {
+        throw new Error("Hello");
       }
-      throw new Error("Hello");
     }).then(data => {
       let user: IProfile = {
         id: data.id,
@@ -83,6 +81,7 @@ function AuthProvider(props: any) {
         email: data.email,
         imageUri: null,
       };
+      setIsAuthenticated(true);
       setUser(user);
       setAuthToken(data.token);
       saveAsync("user", JSON.stringify(user));
@@ -92,12 +91,13 @@ function AuthProvider(props: any) {
 
   const logout = async () => {
     setUser(null);
-    setAuthToken(null)
+    setAuthToken(null);
+    setIsAuthenticated(false);
     removeAsync("user");
     removeSecure("authToken");
   };
 
-  return <AuthContext.Provider value={{ user, authToken, login, logout, register }}>{props.children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ isAuthenticated, user, authToken, login, logout, register }}>{props.children}</AuthContext.Provider>;
 }
 
 export { AuthContext, useAuthContext, AuthProvider };

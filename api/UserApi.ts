@@ -4,6 +4,7 @@ import { getAccessToken } from './AuthUtils';
 
 export default class UserApi {
     static async getContacts(): Promise<Response> {
+        console.log(`${API_ADDRESS}${LOCAL_URL}/contacts`);
         let response = await fetch(`${API_ADDRESS}${LOCAL_URL}/contacts`, {
             method: "GET",
             headers: {
@@ -66,8 +67,6 @@ export default class UserApi {
             },
             body: image
         });
-
-        console.log(response);
 
         return response;
     }
