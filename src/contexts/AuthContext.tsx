@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import AuthApi from "../../api/AuthApi";
 import jwt_decode from "jwt-decode";
-import { getAccessToken } from "../../api/AuthUtils";
 import { IProfile } from "../types";
 import { getAsync, getSecure, removeAsync, removeSecure, saveAsync, saveSecure } from "./storageUtils";
 
@@ -74,19 +73,19 @@ function AuthProvider(props: any) {
       } else {
         throw new Error("Hello");
       }
-    }).then(data => {
+    }).then(async (data) => {
       let user: IProfile = {
         id: data.id,
         username: data.username,
         email: data.email,
-        imageUri: null,
+        imageUri: data.imageUri,
       };
-      setIsAuthenticated(true);
+      console.log(user);
       setUser(user);
-      setAuthToken(data.token);
-      saveAsync("user", JSON.stringify(user));
-      saveSecure("authToken", data.accessToken);
-    }).catch(err => console.log(err));
+      setAuthToken(data.accessToken);
+      await saveAsync("user", JSON.stringify(user));
+      await saveSecure("authToken", data.accessToken);
+    }).then(() => setIsAuthenticated(true)).catch(err => console.log(err));
   };
 
   const logout = async () => {

@@ -9,7 +9,7 @@ export default class ConversationApi {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + getAccessToken()
+                "Authorization": "Bearer " + await getAccessToken()
             },
             body: body
         });
@@ -23,7 +23,7 @@ export default class ConversationApi {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + getAccessToken()
+                "Authorization": "Bearer " + await getAccessToken()
             },
             body: body
         });
@@ -32,12 +32,11 @@ export default class ConversationApi {
     }
 
     static async getCoversations(): Promise<Response> {
-        console.log(`${API_ADDRESS}${LOCAL_URL}/short`);
         let response = await fetch(`${API_ADDRESS}${LOCAL_URL}/short`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + getAccessToken()
+                "Authorization": "Bearer " + await getAccessToken()
             }
         });
 

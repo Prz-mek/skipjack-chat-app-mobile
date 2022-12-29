@@ -8,7 +8,7 @@ const mainColor = '#f4511e';
 export default function ChangeLanguageScreen({ navigation }: any) {
 
     const { i18n } = useTranslation();
-    const [value, setValue] = React.useState('en')
+    const [value, setValue] = React.useState(i18n.language);
 
     return (
         <RadioButton.Group onValueChange={value => {setValue(value); i18n.changeLanguage(value); }} value={value} >

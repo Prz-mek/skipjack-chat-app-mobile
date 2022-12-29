@@ -30,22 +30,6 @@ import { SocketProvider } from './src/contexts/SocketContext';
 
 const mainColor = '#f4511e';
 
-
-// TODO
-function ConversationTitle(props: any) {
-  return (
-    <View style={{ flexDirection: "row" }}>
-      <Image
-        style={{ width: 40, height: 40, borderRadius: 20, marginRight: 15 }}
-        source={{ uri: "https://notjustdev-dummy.s3.us-east-2.amazonaws.com/avatars/jeff.jpeg" }}
-      />
-      <Text style={{ color: "white", fontSize: 18, padding: 5 }}>{props.title}</Text>
-    </View>
-  );
-}
-
-const isAuthenticated = true;
-
 const Stack = createNativeStackNavigator();
 
 export default function App() {
@@ -98,9 +82,7 @@ function SignedInNavigation() {
                   <Stack.Screen name="ChangeLanguage" component={ChangeLanguageScreen} options={{ title: "Change language" }} />
                   <Stack.Screen name="ChangeUsername" component={ChangeUsernameScreen} options={{ title: "Change username" }} />
                   <Stack.Screen name="ChangePassword" component={ChangePasswordScreen} options={{ title: "Change password" }} />
-                  <Stack.Screen name="ConversationRoom" component={ConversationScreen} options={{
-                    headerTitle: () => <ConversationTitle {...{ title: 'Ola' }} />,
-                  }} />
+                  <Stack.Screen name="ConversationRoom" component={ConversationScreen} />
                   <Stack.Screen name="AddContact" component={AddContactScreen} options={{ title: "Add new contact" }} />
                   <Stack.Screen name="CreateConversation" component={CreateConversationScreen} options={{ title: "Create group conversation" }} />
                 </Stack.Group>

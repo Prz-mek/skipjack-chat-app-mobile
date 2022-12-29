@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { useConversations } from "../contexts/ConversationsContext";
 import { IConversationListItem } from "../types";
+import {API_ADDRESS} from '@env';
 
 export interface IConversationListItemProps {
     conversation: IConversationListItem;
@@ -21,10 +22,10 @@ export default function ConversationListItem(props: IConversationListItemProps) 
         <Pressable onPress={onPress}>
             <View style={styles.container}>
                 <View style={styles.leftContainer}>
-                    <Image source={conversation.imageUri ? { uri: conversation.imageUri } : conversation.group ? require("../../assets/default-group.png") : require("../../assets/default-profile.png")} style={styles.avatar} />
+                    <Image source={conversation.imageUri ? { uri: `${API_ADDRESS}/${conversation.imageUri}` } : conversation.group ? require("../../assets/default-group.png") : require("../../assets/default-profile.png")} style={styles.avatar} />
                     <View style={styles.midContainer}>
                         <Text style={styles.conversationName}>{conversation.name}</Text>
-                        { conversation.lastMessage ? <Text style={styles.lastMessage}>{`${conversation.lastMessage?.senderUsername}: ${conversation.lastMessage?.text}`}</Text> : <View></View> }
+                        { conversation.lastMessage ? <Text style={conversation.isLastMessageNotRead ? {...styles.lastMessage, fontWeight: 'bold' } : styles.lastMessage}>{`${conversation.lastMessage?.senderUsername}: ${conversation.lastMessage?.text}`}</Text> : <View></View> }
                     </View>
                 </View>
                 {/* <Text>{chatRoom.lastMessage.createdAt}</Text> */}

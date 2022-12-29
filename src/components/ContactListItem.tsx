@@ -3,6 +3,7 @@ import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import ConversationApi from "../../api/ConversationApi";
 import { useConversations } from "../contexts/ConversationsContext";
 import { IContactListItem } from "../types";
+import {API_ADDRESS} from '@env';
 
 export interface IChatListItemProps {
     contact: IContactListItem;
@@ -32,7 +33,7 @@ export default function ContactListItem(props: IChatListItemProps) {
         <Pressable onPress={onPress}>
             <View style={styles.container}>
                 <View style={styles.leftContainer}>
-                    <Image source={ contact.imageUri ? {uri: contact.imageUri} : require("../../assets/default-profile.png")} style={styles.avatar} />
+                    <Image source={ contact.imageUri ? {uri: `${API_ADDRESS}/${contact.imageUri}`} : require("../../assets/default-profile.png")} style={styles.avatar} />
                     <View style={styles.midContainer}>
                         <Text style={styles.conversationName}>{contact.username}</Text>
                     </View>

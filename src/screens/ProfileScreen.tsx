@@ -1,7 +1,8 @@
 import { useActionSheet } from "@expo/react-native-action-sheet";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, StyleSheet, Image, Pressable } from "react-native";
-import ProfileData from "../mock/ProfileData";
+import {API_ADDRESS} from '@env';
+
 import * as ImagePicker from 'expo-image-picker';
 import "../../i18n.config";
 import { useTranslation } from "react-i18next";
@@ -21,11 +22,20 @@ const mainColor = '#f4511e';
 
 export default function ProfileScreen({ navigation }: any) {
   const { showActionSheetWithOptions } = useActionSheet();
-  const profile = ProfileData;
+  const { user } = useAuthContext();
+  const profile = user;
+
+  const [imageUri, setImageUri] = useState(`${API_ADDRESS}/${profile?.imageUri}`);
   
-  const {logout} = useAuthContext();
+  const { logout } = useAuthContext();
 
   const { t } = useTranslation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: t("profile.header"),
+    });
+  }, [navigation]);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -51,6 +61,10 @@ export default function ProfileScreen({ navigation }: any) {
 
   async function uploadPicture(photo: any) {
     const data = new FormData();
+    if (profile) {
+      console.log(photo.uri);
+      setImageUri(photo.uri);
+    }
     data.append('photo', {
       name: new Date() + "_profile",
       type: photo.type,
@@ -93,10 +107,10 @@ export default function ProfileScreen({ navigation }: any) {
     <View style={styles.container}>
       <View style={styles.userInfo}>
         <Pressable onPress={onPressPicture}>
-          <Image source={profile.imageUri ? { uri: profile.imageUri } : require("../../assets/default-profile.png")} style={styles.profilePicture} />
+          <Image source={profile && profile.imageUri ? { uri: imageUri } : require("../../assets/default-profile.png")} style={styles.profilePicture} />
         </Pressable>
-        <Text style={styles.username}>{profile.username}</Text>
-        <Text style={styles.email}>{profile.email}</Text>
+        <Text style={styles.username}>{profile?.username}</Text>
+        <Text style={styles.email}>{profile?.email}</Text>
       </View>
       <View style={styles.menuContainer}>
         <TouchableRipple onPress={() => navigation.navigate("ChangeLanguage")}>

@@ -16,6 +16,7 @@ export default class AuthApi {
     }
 
     static async login(email: string, password: string) {
+        console.log(`${API_ADDRESS}${LOCAL_URL}/login`);
         let body = JSON.stringify({email: email, password: password});
         console.log("login");
         let response = await fetch(`${API_ADDRESS}${LOCAL_URL}/login`, {

@@ -4,7 +4,6 @@ import MessageApi from "../../api/MessageApi";
 import { IConversationListItem, IMessage } from "../types";
 import { useAuthContext } from "./AuthContext";
 import { useSocket } from "./SocketContext";
-import ConversationListData from "../mock/ConversationListData";
 
 interface IConversationsContext {
     conversations: IConversationListItem[] | any[];
@@ -35,7 +34,7 @@ function ConversationsProvider(props: any) {
 
     const [selectedConversation, setSelectedConversation] = useState<IConversationListItem | undefined>(undefined);
 
-    const socketM = useSocket();        // Of course | Why???
+    const socketM = useSocket();
 
     const loadConversations = () => {
         ConversationApi.getCoversations().then(res => {
@@ -71,10 +70,12 @@ function ConversationsProvider(props: any) {
         } else {
             if (conversationId === selectedConversationId) {
                 setMessages([...messages, message]);
+                seenConversation(conversationId);
             }
             setConversations(prevConversations => {
                 const newConversations = prevConversations.map(conversation => {
                     if (conversation.id.toString() === conversationId) {
+                        conversation.isLastMessageNotRead = true;
                         return { ...conversation, lastMessage: message };
                     } else {
                          return conversation;
@@ -105,10 +106,20 @@ function ConversationsProvider(props: any) {
         socket?.emit("send-message", { conversation: selectedConversationId, sender: auth?.user?.id, text: text });
     }
 
+    function seenConversation(id: string) {
+        let socket: any = socketM;
+        socket?.emit("seen-conversation", id);
+    }
+
     async function selectConversation(id: string) {
         setSelectedConversationId(id);
-        setSelectedConversation(conversations.find(c => c.id === id));
+        let conversation = conversations.find(c => c.id === id);
+        if (conversation?.isLastMessageNotRead) {
+            conversation.isLastMessageNotRead = false;
+        }
+        setSelectedConversation(conversation);
         loadMessages(id);
+        seenConversation(id);
     }
 
     function isSelected(id: string) {

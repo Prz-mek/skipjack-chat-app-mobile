@@ -2,6 +2,7 @@ import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { IContactListItem } from "../types";
 import { MaterialIcons } from '@expo/vector-icons';
 import UserApi from "../../api/UserApi";
+import {API_ADDRESS} from '@env';
 
 export interface IChatListItemProps {
     contact: IContactListItem;
@@ -18,7 +19,7 @@ export default function AddContactUserListItem(props: IChatListItemProps) {
         <View>
             <View style={styles.container}>
                 <View style={styles.leftContainer}>
-                    <Image source={{ uri: contact.imageUri }} style={styles.avatar} />
+                    <Image source={contact.imageUri ? {uri: `${API_ADDRESS}/${contact.imageUri}`} : require("../../assets/default-profile.png")} style={styles.avatar} />
                     <View style={styles.midContainer}>
                         <Text style={styles.conversationName}>{contact.username}</Text>
                     </View>

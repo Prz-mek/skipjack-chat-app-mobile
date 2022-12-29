@@ -4,6 +4,7 @@ import { useConversations } from "../contexts/ConversationsContext";
 import { IContactListItem } from "../types";
 import { Checkbox } from 'react-native-paper';
 import { useState } from "react";
+import {API_ADDRESS} from '@env';
 
 export interface ICreateConversationContactListItemProps {
     isChecked: boolean;
@@ -20,7 +21,7 @@ export default function CreateConversationContactListItem(props: ICreateConversa
         <Pressable onPress={onPress}>
             <View style={styles.container}>
                 <View style={styles.leftContainer}>
-                    <Image source={ contact.imageUri ? { uri: contact.imageUri } : require("../../assets/default-profile.png")} style={styles.avatar} />
+                    <Image source={ contact.imageUri ? { uri: `${API_ADDRESS}/${contact.imageUri}` } : require("../../assets/default-profile.png")} style={styles.avatar} />
                     <View style={styles.midContainer}>
                         <Text style={styles.userName}>{contact.username}</Text>
                     </View>

@@ -9,7 +9,7 @@ export default class UserApi {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + getAccessToken()
+                "Authorization": "Bearer " + await getAccessToken()
             }
         });
 
@@ -22,7 +22,7 @@ export default class UserApi {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + getAccessToken()
+                "Authorization": "Bearer " + await getAccessToken()
             },
             body: body
         });
@@ -36,7 +36,7 @@ export default class UserApi {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + getAccessToken()
+                "Authorization": "Bearer " + await getAccessToken()
             },
             body: body
         });
@@ -49,7 +49,7 @@ export default class UserApi {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": "Bearer " + getAccessToken()
+                "Authorization": "Bearer " + await getAccessToken()
             }
         });
 
@@ -57,13 +57,12 @@ export default class UserApi {
     }
 
     static async uploadAvatar(image: FormData): Promise<Response> {
-        console.log(image)
         let response = await fetch(`${API_ADDRESS}${LOCAL_URL}/avatar`, {
             method: "POST",
             headers: {
                 "Accept": "application/json",
                 "Content-Type": "multipart/form-data",
-                "Authorization": "Bearer " + getAccessToken()
+                "Authorization": "Bearer " + await getAccessToken()
             },
             body: image
         });
@@ -71,15 +70,4 @@ export default class UserApi {
         return response;
     }
 
-    // static async removeAvatar(): Promise<Response> {
-    //     let response = await fetch(`${API_ADDRESS}${LOCAL_URL}/avatar`, {
-    //         method: "DELETE",
-    //         headers: {
-    //             "Content-Type": "application/json",
-    //             "Authorization": "Bearer " + getAccessToken()
-    //         }
-    //     });
-
-    //     return response;
-    // }
 }

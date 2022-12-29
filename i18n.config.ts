@@ -1,11 +1,10 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import getLocation from "./src/utils/getLocation";
 
 const en = {
-    navigation: {
-        profile: "Profile",
-    },
     profile: {
+        header: "Profile",
         changeLanguage: "Language",
         changeUsername: "Change Username",
         changePassword: "Change Password",
@@ -14,10 +13,8 @@ const en = {
 };
 
 const pl = {
-    navigation: {
-        profile: "Profil",
-    },
     profile: {
+        header: "Profil",
         changeLanguage: "Język",
         changeUsername: "Zmień nazwę użytkownika",
         changePassword: "Zmień hasło",
@@ -34,7 +31,7 @@ const resources = {
     }
 }
 
-i18n.use(initReactI18next).init({
+i18n.use(initReactI18next).use(getLocation as any).init({
     compatibilityJSON: 'v3',
     resources,
     fallbackLng: "en",
