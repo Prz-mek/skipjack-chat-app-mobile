@@ -3,6 +3,7 @@ import { FlatList, SafeAreaView, StyleSheet, Image, View, Text } from "react-nat
 import Message from "../components/Message";
 import MessageInput from "../components/MessageInput";
 import { useConversations } from "../contexts/ConversationsContext";
+import {API_ADDRESS} from '@env';
 
 
 function ConversationTitle(props: any) {
@@ -10,7 +11,7 @@ function ConversationTitle(props: any) {
     <View style={{ flexDirection: "row" }}>
       <Image
         source={
-          props.imageUri ? { uri: props.imageUri } 
+          props.image ? { uri: `${API_ADDRESS}/${props.image}` } 
             : props.group ? require("../../assets/default-group.png") : require("../../assets/default-profile.png")
         }
         style={{ width: 40, height: 40, borderRadius: 20, marginRight: 15 }}

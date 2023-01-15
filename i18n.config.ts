@@ -3,6 +3,21 @@ import { initReactI18next } from "react-i18next";
 import getLocation from "./src/utils/getLocation";
 
 const en = {
+    conversationList: {
+        header: "Conversations",
+    },
+    contactsList: {
+        header: "Contacts",
+    },
+    addContact: {
+        header: "Add new contact",
+    },
+    createConvesation: {
+        header: "Create group conversation",
+        groupName: "Group name",
+        buttonLabel: "Create",
+        searchLabel: "Search",
+    },
     profile: {
         header: "Profile",
         changeLanguage: "Language",
@@ -13,6 +28,21 @@ const en = {
 };
 
 const pl = {
+    conversationList: {
+        header: "Konwersacje",
+    },
+    contactsList: {
+        header: "Kontakty",
+    },
+    addContact: {
+        header: "Dodaj nowy kontakt",
+    },
+    createConvesation: {
+        header: "Stwórz konwersacje grupową",
+        groupName: "Nazwa grupy",
+        buttonLabel: "Stwórz",
+        searchLabel: "Szukaj",
+    },
     profile: {
         header: "Profil",
         changeLanguage: "Język",

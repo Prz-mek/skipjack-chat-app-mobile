@@ -3,10 +3,19 @@ import { FlatList, View, StyleSheet } from "react-native";
 import UserApi from "../../api/UserApi";
 import ContactListItem from "../components/ContactListItem";
 import { IContactListItem } from "../types";
+import "../../i18n.config";
+import { useTranslation } from "react-i18next";
 
 
-export default function ContactListScreen() {
+export default function ContactListScreen({navigation}: any) {
   const [contacts, setContacts] = useState<IContactListItem[]>([]);
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: t("contactsList.header"),
+    });
+  }, [navigation, t]);
 
   useEffect(() => {
     UserApi.getContacts().then(res => {

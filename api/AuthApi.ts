@@ -29,4 +29,17 @@ export default class AuthApi {
 
         return response;
     }
+
+    static async changePassword(password: string, newPassword: string) {
+        let body = JSON.stringify({password, newPassword});
+        let response = await fetch(`${API_ADDRESS}${LOCAL_URL}/change-password`, {
+            method: "POST",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body: body
+        });
+
+        return response;
+    }
 }

@@ -1,16 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 
 import { TextInput } from 'react-native-paper';
+import AuthApi from "../../api/AuthApi";
 
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
 import CustomButton from "../components/CustomButton";
 
 const mainColor = '#f4511e';
 
 
 export default function ChangePasswordScreen({ navigation }: any) {
+    const [oldPassword, setOldPassword] = useState("");
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+
+
+    const onSubmit = async () => {
+        if (password === confirmPassword) {
+            AuthApi.changePassword(oldPassword, password)
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -18,6 +27,8 @@ export default function ChangePasswordScreen({ navigation }: any) {
                 <TextInput
                     label="Old password"
                     secureTextEntry={true}
+                    value={oldPassword}
+                    onChangeText={setOldPassword}
                     placeholder="Old password"
                     placeholderTextColor="#777777"
                     autoCorrect={false} style={styles.input}
@@ -28,6 +39,8 @@ export default function ChangePasswordScreen({ navigation }: any) {
             <View style={styles.actionContainer}>
                 <TextInput
                     label="New password"
+                    value={password}
+                    onChangeText={setPassword}
                     secureTextEntry={true}
                     placeholder="New password"
                     placeholderTextColor="#777777"
@@ -39,6 +52,8 @@ export default function ChangePasswordScreen({ navigation }: any) {
             <View style={styles.actionContainer}>
                 <TextInput
                     secureTextEntry={true}
+                    value={confirmPassword}
+                    onChangeText={setConfirmPassword}
                     placeholder="Repeat new password"
                     placeholderTextColor="#777777"
                     autoCorrect={false} style={styles.input}
@@ -47,7 +62,7 @@ export default function ChangePasswordScreen({ navigation }: any) {
                 />
             </View>
             <View style={{justifyContent: 'center', alignItems: 'center' }}>
-                <CustomButton text="Change" onPress={() => console.log('Pressed')} />
+                <CustomButton text="Change" onPress={onSubmit} />
             </View>
         </View>
     );

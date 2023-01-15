@@ -4,16 +4,25 @@ import { Searchbar } from "react-native-paper";
 import UserApi from "../../api/UserApi";
 import AddContactUserListItem from "../components/AddContactUserListItem";
 import { IContactListItem } from "../types";
+import "../../i18n.config";
+import { useTranslation } from "react-i18next";
 
 const mainColor = '#f4511e';
 
-export default function AddContactScreen() {
+export default function AddContactScreen({navigation}: any) {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchedUsers, setSearchedUsers] = useState<IContactListItem[]>([]);
+  const { t } = useTranslation();
 
   const onChangeSearch = (query: string) => {
     setSearchQuery(query.toLowerCase());
   }
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: t("addContact.header"),
+    });
+  }, [navigation, t]);
 
   useEffect(() => {
     UserApi.filterUsers("").then(res => {

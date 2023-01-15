@@ -7,6 +7,8 @@ import CreateConversationContactListItem from "../components/CreateConversationC
 import CustomButton from "../components/CustomButton";
 import { useConversations } from "../contexts/ConversationsContext";
 import { IContactListItem } from "../types";
+import "../../i18n.config";
+import { useTranslation } from "react-i18next";
 
 const mainColor = '#f4511e';
 
@@ -18,6 +20,7 @@ export default function CreateConversationScreen() {
 
   const { createConversation } = useConversations();
   const navigation = useNavigation();
+  const { t } = useTranslation();
 
   const onCheckedPress = (item: IContactListItem) => {
     setChecked(checked.filter(e => e.id != item.id));
@@ -34,6 +37,13 @@ export default function CreateConversationScreen() {
     createConversation(name, recipiants);
     navigation.navigate("InnerTabNavigation" as never);
   }
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: t("createConvesation.header"),
+    });
+  }, [navigation, t]);
+
 
   useEffect(() => {
     UserApi.getContacts().then(res => {
@@ -56,7 +66,7 @@ export default function CreateConversationScreen() {
         <TextInput
           value={name}
           onChangeText={name => setName(name)}
-          placeholder="Group name"
+          placeholder={t("createConvesation.groupName") as string|undefined}
           placeholderTextColor="#777777"
           autoCorrect={false} style={styles.input}
           underlineColor={mainColor}
@@ -67,10 +77,10 @@ export default function CreateConversationScreen() {
         <FlatList style={{ width: '100%' }} data={checked} renderItem={({ item }) => <CreateConversationContactListItem isChecked={true} contact={item} onPress={() => onCheckedPress(item)} />} />
       </View>
       <View style={{ alignItems: 'center' }}>
-        <CustomButton text={"Create"} onPress={handleSubmit} />
+        <CustomButton text={t("createConvesation.buttonLabel") as string} onPress={handleSubmit} />
       </View>
       <Searchbar
-        placeholder="Search"
+        placeholder={t("createConvesation.searchLabel") as string}
         onChangeText={onChangeSearch}
         value={searchQuery}
         theme={{ colors: { primary: mainColor, placeholder: mainColor } }}

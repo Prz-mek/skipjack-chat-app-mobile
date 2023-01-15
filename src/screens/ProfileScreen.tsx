@@ -6,6 +6,7 @@ import {API_ADDRESS} from '@env';
 import * as ImagePicker from 'expo-image-picker';
 import "../../i18n.config";
 import { useTranslation } from "react-i18next";
+import * as FileSystem from 'expo-file-system';
 
 import {
   Text,
@@ -16,6 +17,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 import UserApi from "../../api/UserApi";
 import { useAuthContext } from "../contexts/AuthContext";
+import { FileSystemUploadType } from "expo-file-system/build/FileSystem.types";
 
 const mainColor = '#f4511e';
 
@@ -24,10 +26,10 @@ export default function ProfileScreen({ navigation }: any) {
   const { showActionSheetWithOptions } = useActionSheet();
   const { user } = useAuthContext();
   const profile = user;
-
-  const [imageUri, setImageUri] = useState(`${API_ADDRESS}/${profile?.imageUri}`);
   
   const { logout } = useAuthContext();
+
+  const { authToken } = useAuthContext();
 
   const { t } = useTranslation();
 
@@ -35,7 +37,7 @@ export default function ProfileScreen({ navigation }: any) {
     navigation.setOptions({
       title: t("profile.header"),
     });
-  }, [navigation]);
+  }, [navigation, t]);
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -60,25 +62,16 @@ export default function ProfileScreen({ navigation }: any) {
   };
 
   async function uploadPicture(photo: any) {
-    const data = new FormData();
-    if (profile) {
-      console.log(photo.uri);
-      setImageUri(photo.uri);
-    }
-    data.append('photo', {
-      name: new Date() + "_profile",
-      type: photo.type,
-      uri: photo.uri,
-    } as any);
-
-    UserApi.uploadAvatar(data)
-      .then((response) => response.json())
-      .then((response) => {
-        console.log('response', response);
-      })
-      .catch((error) => {
-        console.log('error', error);
+    const LOCAL_URL = "/api/users"
+      const uploadResult = await FileSystem.uploadAsync(`${API_ADDRESS}${LOCAL_URL}/avatar`, photo.uri, {
+        httpMethod: 'POST',
+        uploadType: FileSystemUploadType.MULTIPART,
+        fieldName: 'photo',
+        headers: {
+          authorization: "Bearer " + authToken,
+        },
       });
+      console.warn(uploadResult);
   }
 
 
@@ -107,7 +100,7 @@ export default function ProfileScreen({ navigation }: any) {
     <View style={styles.container}>
       <View style={styles.userInfo}>
         <Pressable onPress={onPressPicture}>
-          <Image source={profile && profile.imageUri ? { uri: imageUri } : require("../../assets/default-profile.png")} style={styles.profilePicture} />
+          <Image source={profile && profile.imageUri ? { uri: `${API_ADDRESS}/${profile?.imageUri}` } : require("../../assets/default-profile.png")} style={styles.profilePicture} />
         </Pressable>
         <Text style={styles.username}>{profile?.username}</Text>
         <Text style={styles.email}>{profile?.email}</Text>

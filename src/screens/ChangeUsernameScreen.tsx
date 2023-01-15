@@ -2,14 +2,13 @@ import React from "react";
 import { View, StyleSheet } from "react-native";
 
 import { TextInput } from 'react-native-paper';
-
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
 import CustomButton from "../components/CustomButton";
 
 const mainColor = '#f4511e';
 
 export default function ChangeUsernameScreen({ navigation }: any) {
+
+    onsubmit
 
     return (
         <View style={styles.container}>

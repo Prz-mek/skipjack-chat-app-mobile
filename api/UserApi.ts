@@ -70,4 +70,18 @@ export default class UserApi {
         return response;
     }
 
+    static async updateUsername(username: string): Promise<Response> {
+        const body = JSON.stringify({ username });
+        let response = await fetch(`${API_ADDRESS}${LOCAL_URL}/username`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer " + await getAccessToken()
+            },
+            body: body
+        });
+
+        return response;
+    }
+
 }

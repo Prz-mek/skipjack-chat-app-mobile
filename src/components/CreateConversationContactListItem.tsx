@@ -3,7 +3,6 @@ import { View, Text, Image, StyleSheet, Pressable } from "react-native";
 import { useConversations } from "../contexts/ConversationsContext";
 import { IContactListItem } from "../types";
 import { Checkbox } from 'react-native-paper';
-import { useState } from "react";
 import {API_ADDRESS} from '@env';
 
 export interface ICreateConversationContactListItemProps {

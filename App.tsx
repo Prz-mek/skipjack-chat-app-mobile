@@ -23,7 +23,6 @@ import AddContactScreen from './src/screens/AddContactScreen';
 import CreateConversationScreen from './src/screens/CreateConversationScreen';
 import ChangeLanguageScreen from './src/screens/ChangeLanguageScreen';
 import "./i18n.config";
-import { useTranslation } from 'react-i18next';
 import { ConversationsProvider } from './src/contexts/ConversationsContext';
 import { SocketProvider } from './src/contexts/SocketContext';
 
