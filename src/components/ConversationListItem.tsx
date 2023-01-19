@@ -28,7 +28,6 @@ export default function ConversationListItem(props: IConversationListItemProps) 
                         { conversation.lastMessage ? <Text style={conversation.isLastMessageNotRead ? {...styles.lastMessage, fontWeight: 'bold' } : styles.lastMessage}>{`${conversation.lastMessage?.senderUsername}: ${conversation.lastMessage?.text}`}</Text> : <View></View> }
                     </View>
                 </View>
-                {/* <Text>{chatRoom.lastMessage.createdAt}</Text> */}
             </View>
         </Pressable>
     )

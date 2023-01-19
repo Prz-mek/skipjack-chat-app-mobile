@@ -13,8 +13,6 @@ export interface ICreateConversationContactListItemProps {
 
 export default function CreateConversationContactListItem(props: ICreateConversationContactListItemProps) {
     const { isChecked, contact, onPress } = props;
-    const navigation = useNavigation();
-
 
     return (
         <Pressable onPress={onPress}>

@@ -4,11 +4,11 @@ import { MaterialIcons } from '@expo/vector-icons';
 import UserApi from "../../api/UserApi";
 import {API_ADDRESS} from '@env';
 
-export interface IChatListItemProps {
+export interface IConversationListItemProps {
     contact: IContactListItem;
 }
 
-export default function AddContactUserListItem(props: IChatListItemProps) {
+export default function AddContactUserListItem(props: IConversationListItemProps) {
     const { contact } = props;
 
     const onPress = () => {

@@ -5,11 +5,11 @@ import { useConversations } from "../contexts/ConversationsContext";
 import { IContactListItem } from "../types";
 import {API_ADDRESS} from '@env';
 
-export interface IChatListItemProps {
+export interface IContactListItemProps {
     contact: IContactListItem;
 }
 
-export default function ContactListItem(props: IChatListItemProps) {
+export default function ContactListItem(props: IContactListItemProps) {
     const { contact } = props;
     const { selectConversation } = useConversations();
     const navigation = useNavigation();
