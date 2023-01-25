@@ -2,21 +2,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as Localization from "expo-localization";
 
 /**
- * This part of software uses code form other software attributed below.
- * 
- * MIT License
- * 
- * Copyright (c) 2021 Katsiaryna Lupachova
- * 
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
-
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
+ * Based on article:
+ * author: Katsiaryna Lupachova
+ * title: React Native Internationalization with i18next
+ * url: https://dev.to/ramonak/react-native-internationalization-with-i18next-568n
  */
 
 const LANGUAGE_KEY = "lang_settings";
