@@ -79,6 +79,7 @@ function AuthProvider(props: any) {
         username: data.username,
         email: data.email,
         imageUri: data.imageUri,
+        isConfirmed: data.isConfirmed,
       };
       console.log(user);
       setUser(user);

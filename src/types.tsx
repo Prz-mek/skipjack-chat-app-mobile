@@ -3,6 +3,7 @@ export interface IProfile {
     username: string;
     email: string
     imageUri: string | null;
+    isConfirmed: boolean;
 }
 
 export interface IConversationListItem {

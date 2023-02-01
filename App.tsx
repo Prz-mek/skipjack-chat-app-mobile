@@ -41,9 +41,9 @@ export default function App() {
 }
 
 function MainNavigation() {
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated, user } = useAuthContext();
 
-  return isAuthenticated ? <SignedInNavigation /> : <SignedOutNavigation />
+  return isAuthenticated && user?.isConfirmed ? <SignedInNavigation /> : <SignedOutNavigation />
 }
 
 function SignedInNavigation() {
